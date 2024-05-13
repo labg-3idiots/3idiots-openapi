@@ -10,13 +10,18 @@ spring:
   config:
     activate:
       on-profile: dev
-
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/3idiots
-    username: user
-    password: 1234
+    url: jdbc:mariadb://localhost:3306/${DB}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  thymeleaf:
+    prefix: classpath:templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: false # 개발시에는 false로(default: true)
 
 openapi:
-  serviceKey: SCT/cM3T6lehlLW/rcMn+TwXDTh7t5JRN3+iIdSXGPQ6rdEJmCNKQQa0LoMlMslQBptdg4Dt1BgX0pJ9o+h2kg==
-  baseUrl: http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst
+  serviceKey: ${SERVICE_KEY}
+  baseUrl: ${URL}
