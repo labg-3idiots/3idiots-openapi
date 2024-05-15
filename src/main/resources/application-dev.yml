@@ -21,12 +21,17 @@ spring:
     suffix: .html
     mode: HTML
     cache: false # 개발시에는 false로(default: true)
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
 
 openapi:
   serviceKey: ${SERVICE_KEY}
   baseUrl: ${URL}
 
-# swagger 설정
+# Swagger 설정
 springdoc:
   swagger-ui:
     path: /api-docs.html
