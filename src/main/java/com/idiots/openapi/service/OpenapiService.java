@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 @Service
@@ -14,7 +15,7 @@ public class OpenapiService {
     @Value("${openapi.serviceKey}")
     private String SERVICE_KEY;
 
-    public Object getOpenapi() {
+    public Mono<String> getOpenapi() {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("serviceKey", SERVICE_KEY)
@@ -26,6 +27,5 @@ public class OpenapiService {
                         .build())
                 .retrieve()
                 .bodyToMono(String.class);
-
     }
 }
