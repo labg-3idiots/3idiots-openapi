@@ -25,3 +25,12 @@ spring:
 openapi:
   serviceKey: ${SERVICE_KEY}
   baseUrl: ${URL}
+
+# swagger 설정
+springdoc:
+  swagger-ui:
+    path: /api-docs.html
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-produces-media-type: application/json
