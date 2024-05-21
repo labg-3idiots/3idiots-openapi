@@ -20,7 +20,7 @@ public class OpenapiService {
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("serviceKey", SERVICE_KEY)
                         .queryParam("dataType", "JSON")
-                        .queryParam("base_date", "20240506")
+                        .queryParam("base_date", "20240519")
                         .queryParam("base_time", "0630")
                         .queryParam("nx", 120)
                         .queryParam("ny", 60)
