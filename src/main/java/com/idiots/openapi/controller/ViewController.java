@@ -11,4 +11,9 @@ public class ViewController {
     public String home() {
         return "views/index";
     }
+
+    @GetMapping("/signup")
+    public String signup() {
+        return "views/signup";
+    }
 }

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content />
+        <meta name="author" content />
+        <title>Modern Business - Start Bootstrap Template</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+        <!-- Font Awesome -->
+        <link href="/css/font-awesome.min.css" rel="stylesheet"
+        />
+        <!-- Custom Google font-->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+        <!-- Bootstrap icons-->
+        <link href="/css/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+        <!-- mdb CSS-->
+        <link href="/css/mdb.min.css" rel="stylesheet" />
+
+        <style>
+            .wrong .fa-check {
+                display: none;
+            }
+            .good .fa-times {
+                display: none;
+            }
+        </style>
+    </head>
+    <body class="d-flex flex-column">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+                <div class="container px-5">
+                    <a class="navbar-brand" href="index.html"><span class="fw-bolder text-primary"></span></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
+                            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="resume.html">Resume</a></li>
+                            <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                            <li class="nav-item"><a class="nav-link" href="signup.html">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Page content-->
+            <section class="py-5">
+                <div class="container px-5">
+                    <!-- Contact form-->
+                    <div class="bg-light rounded-4 py-5 px-4 px-md-5">
+                        <div class="text-center mb-5">
+                            <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
+                            <h1 class="fw-bolder">회원가입</h1>
+                        </div>
+                        <div class="row gx-5 justify-content-center">
+                            <div class="col-lg-8 col-xl-6">
+                                <form id="contactForm" class="page-form needs-validation" novalidate>
+                                    <!-- Name input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="name" type="text" placeholder="이름을 입력하세요." required>
+                                        <label for="name">이름</label>
+                                        <div class="invalid-feedback">이름은 필수 입력 값입니다.</div>
+                                        <div class="valid-feedback">좋습니다!</div>
+                                    </div>
+<!--                                    &lt;!&ndash; ID input&ndash;&gt;-->
+<!--                                    <div class="form-floating mb-3">-->
+<!--                                        <input class="form-control" id="id" placeholder="name@example.com"/>-->
+<!--                                        <label for="id">아이디</label>-->
+<!--                                        <div class="invalid-feedback" data-sb-feedback="id:required">아이디는 필수 입력 값입니다.</div>-->
+<!--&lt;!&ndash;                                        <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>&ndash;&gt;-->
+<!--                                    </div>-->
+                                    <!-- password input -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="password-input" type="password" placeholder="비밀번호를 입력하세요."/>
+                                        <label for="password-input">비밀번호</label>
+                                        <div class="invalid-feedback">비밀번호는 필수 입력 값입니다.</div>
+                                        <div class="valid-feedback">좋습니다!</div>
+                                    </div>
+<!--                                    &lt;!&ndash; password check input&ndash;&gt;-->
+<!--                                    <div class="form-floating mb-3">-->
+<!--                                        <input class="form-control" id="password_check" type="password" placeholder="비밀번호 확인" data-sb-validations="required"/>-->
+<!--                                        <label for="password_check">비밀번호 확인</label>-->
+<!--                                        <div class="invalid-feedback" data-sb-feedback="password_check:required">비밀번호 확인은 필수 입력 값입니다.</div>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; Phone number input&ndash;&gt;-->
+<!--                                    <div class="form-floating mb-3">-->
+<!--                                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required"/>-->
+<!--                                        <label for="phone">핸드폰 번호</label>-->
+<!--                                        <div class="invalid-feedback" data-sb-feedback="phone:required">핸드폰 번호는 필수 입력 값입니다.</div>-->
+<!--                                    </div>-->
+                                    <!-- Submit success message-->
+                                    <!---->
+                                    <!-- This is what your users will see when the form-->
+                                    <!-- has successfully submitted-->
+                                    <div class="d-none" id="submitSuccessMessage">
+                                        <div class="text-center mb-3">
+                                            <div class="fw-bolder">Form submission successful!</div>
+                                            To activate this form, sign up at
+                                            <br />
+                                            <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                                        </div>
+                                    </div>
+                                    <!-- Submit error message-->
+                                    <!---->
+                                    <!-- This is what your users will see when there is-->
+                                    <!-- an error submitting the form-->
+                                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                                    <!-- Submit Button-->
+                                    <div class="d-grid"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
+                                </form>
+                            </div>
+
+                            <div class="col-6 mt-4 mt-xxl-0 w-auto h-auto">
+
+                                <div
+                                        data-mdb-alert-init class="alert px-4 py-3 mb-0 d-none"
+                                        role="alert"
+                                        data-mdb-color="warning"
+                                        id="password-alert"
+                                >
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="requirements leng">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            <i class="fas fa-times text-danger me-3"></i>
+                                            비밀번호는 최소 8글자 입니다.</li>
+                                        <li class="requirements big-letter">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            <i class="fas fa-times text-danger me-3"></i>
+                                            비밀번호는 최소 1개의 영문 대문자를 포함해야 합니다.</li>
+                                        <li class="requirements num">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            <i class="fas fa-times text-danger me-3"></i>
+                                            비밀번호는 최소 1개의 숫자를 포함해야 합니다.</li>
+                                        <li class="requirements special-char">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            <i class="fas fa-times text-danger me-3"></i>
+                                            비밀번호는 최소 1개의 특수문자를 포함해야 합니다.</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Footer-->
+        <footer class="bg-white py-4 mt-auto">
+            <div class="container px-5">
+                <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                    <div class="col-auto"><div class="small m-0">Copyright &copy; Your Website 2023</div></div>
+                    <div class="col-auto">
+                        <a class="small" href="#!">Privacy</a>
+                        <span class="mx-1">&middot;</span>
+                        <a class="small" href="#!">Terms</a>
+                        <span class="mx-1">&middot;</span>
+                        <a class="small" href="#!">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/scripts.js"></script>
+        <!-- mdb JS-->
+        <script src="/js/mdb.umd.min.js"></script>
+    <script>
+        // 회원가입 FORM 제출 시 유효성 검사
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+        // 비밀번호 유효성
+        addEventListener("DOMContentLoaded", event => {
+            const password = document.getElementById("password-input");
+            const passwordAlert = document.getElementById("password-alert");
+            const requirements = document.querySelectorAll(".requirements");
+            const leng = document.querySelector(".leng");
+            const bigLetter = document.querySelector(".big-letter");
+            const num = document.querySelector(".num");
+            const specialChar = document.querySelector(".special-char");
+
+            requirements.forEach((element) => element.classList.add("wrong"));
+
+            password.addEventListener("focus", () => {
+                passwordAlert.classList.remove("d-none");
+                if (!password.classList.contains("is-valid")) {
+                    password.classList.add("is-invalid");
+                }
+            });
+
+            password.addEventListener("input", () => {
+                const value = password.value;
+                const isLengthValid = value.length >= 8;
+                const hasUpperCase = /[A-Z]/.test(value);
+                const hasNumber = /\d/.test(value);
+                const hasSpecialChar = /[!@#$%^&*()\[\]{}\\|;:'",<.>/?`~]/.test(value);
+
+                leng.classList.toggle("good", isLengthValid);
+                leng.classList.toggle("wrong", !isLengthValid);
+                bigLetter.classList.toggle("good", hasUpperCase);
+                bigLetter.classList.toggle("wrong", !hasUpperCase);
+                num.classList.toggle("good", hasNumber);
+                num.classList.toggle("wrong", !hasNumber);
+                specialChar.classList.toggle("good", hasSpecialChar);
+                specialChar.classList.toggle("wrong", !hasSpecialChar);
+
+                const isPasswordValid = isLengthValid && hasUpperCase && hasNumber && hasSpecialChar;
+
+                if (isPasswordValid) {
+                    password.classList.remove("is-invalid");
+                    password.classList.add("is-valid");
+
+                    requirements.forEach((element) => {
+                        element.classList.remove("wrong");
+                        element.classList.add("good");
+                    });
+
+                    passwordAlert.classList.remove("alert-warning");
+                    passwordAlert.classList.add("alert-success");
+                } else {
+                    password.classList.remove("is-valid");
+                    password.classList.add("is-invalid");
+
+                    passwordAlert.classList.add("alert-warning");
+                    passwordAlert.classList.remove("alert-success");
+                }
+            });
+
+            password.addEventListener("blur", () => {
+                passwordAlert.classList.add("d-none");
+            });
+        });
+    </script>
+    </body>
+</html>
