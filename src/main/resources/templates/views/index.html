@@ -26,15 +26,50 @@
             <section class="py-5">
                 <div class="container px-5 pb-5">
                     <div class="row gx-5 align-items-center">
+
                         <div class="col-xxl-5">
-                            <div class="text-center">
-                                <div class="fs-3 fw-light text-black-50 mb-5">로그인 후 이용해주세요</div>
-                                <div class="d-grid gap-3 d-sm-flex justify-content-center mb-3">
-                                    <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/signin">로그인</a>
-                                    <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" href="/signup">회원가입</a>
+                            <!-- 회원 정보 div -->
+                            <div class="row border border-2">
+                                <div th:if="${session.loginUser == null}" >
+                                    <div class="text-center">
+                                        <div class="fs-3 fw-light text-black-50 mb-5">로그인 후 이용해주세요</div>
+                                        <div class="d-grid gap-3 d-sm-flex justify-content-center mb-3">
+                                            <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/signin">로그인</a>
+                                            <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" href="/signup">회원가입</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if="${session.loginUser != null}" class="col-xxl-5">
+                                    <div class="text-center">
+                                        <div class="fs-3 fw-light text-black-50 mb-5">
+                                            <span th:text="${session.loginUser}"></span> 님 안녕하세요!!
+                                        </div>
+                                        <div class="d-grid gap-3 d-sm-flex justify-content-center mb-3">
+                                            <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/signout">로그아웃</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 기타 정보 창 -->
+                            <div class="row m-5 border border-2">
+                                <div th:if="${session.loginUser == null}" >
+                                    <div class="text-center">
+                                        <div class="fs-3 fw-light text-black-50 mb-5">로그인 후 이용해주세요</div>
+                                    </div>
+                                </div>
+                                <div th:if="${session.loginUser != null}" class="col-xxl-5">
+                                    <div class="text-center">
+                                        <div class="fs-3 fw-light text-black-50 mb-5">
+                                            <span th:text="${session.loginUser}"></span> 님 안녕하세요!!
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
+
+
                         <div class="col-xxl-7">
                             <!-- Header profile picture-->
                             <div class="d-flex justify-content-center mt-5 mt-xxl-0">
