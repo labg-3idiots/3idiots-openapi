@@ -38,8 +38,15 @@ logging:
         type: trace
 
 openapi:
-  serviceKey: ${SERVICE_KEY}
-  baseUrl: ${URL}
+  serviceKey: ${OPENAPI_SERVICE_KEY}
+  host: ${OPENAPI_HOST}
+  endPoint: ${OPENAPI_END_POINT}
+
+# 비즈엠 설정값 - SMS, 알림톡 전송 서비스
+bizm:
+  profileKey: ${BIZM_PROFILE_KEY}
+  host: ${BIZM_HOST}
+  endPoint: ${BIZM_END_POINT}
 
 # swagger 설정
 springdoc:
