@@ -9,8 +9,8 @@
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
         <!-- Font Awesome -->
-        <link href="/css/font-awesome.min.css" rel="stylesheet"
-        />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet">
         <!-- Custom Google font-->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,6 +28,10 @@
             }
             .good .fa-times {
                 display: none;
+            }
+
+            .warn {
+                background-color: #fec;
             }
         </style>
     </head>
@@ -61,10 +65,10 @@
                             <div class="col-lg-8 col-xl-6">
                                 <form id="contactForm" class="page-form needs-validation" novalidate>
                                     <!-- Name input-->
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="name" type="text" placeholder="이름을 입력하세요." required>
-                                        <label for="name">이름</label>
-                                        <div class="invalid-feedback">이름은 필수 입력 값입니다.</div>
+                                    <div class="form-floating mb-4">
+                                        <input class="form-control" id="id" type="text" placeholder="아이디를 입력하세요."/>
+                                        <label for="id">아이디를 입력하세요.</label>
+                                        <div class="invalid-feedback">아이디는 필수 입력 값입니다.</div>
                                         <div class="valid-feedback">좋습니다!</div>
                                     </div>
 <!--                                    &lt;!&ndash; ID input&ndash;&gt;-->
@@ -75,18 +79,43 @@
 <!--&lt;!&ndash;                                        <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>&ndash;&gt;-->
 <!--                                    </div>-->
                                     <!-- password input -->
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="password-input" type="password" placeholder="비밀번호를 입력하세요."/>
-                                        <label for="password-input">비밀번호</label>
-                                        <div class="invalid-feedback">비밀번호는 필수 입력 값입니다.</div>
+                                    <div class="form-floating mt-2 mb-4">
+                                        <input class="form-control" id="password" type="password" placeholder="비밀번호를 입력하세요." required/>
+                                        <label for="password">비밀번호</label>
+                                        <div class="invalid-feedback">비밀번호 필수 조건을 확인하세요.</div>
                                         <div class="valid-feedback">좋습니다!</div>
                                     </div>
-<!--                                    &lt;!&ndash; password check input&ndash;&gt;-->
-<!--                                    <div class="form-floating mb-3">-->
-<!--                                        <input class="form-control" id="password_check" type="password" placeholder="비밀번호 확인" data-sb-validations="required"/>-->
-<!--                                        <label for="password_check">비밀번호 확인</label>-->
-<!--                                        <div class="invalid-feedback" data-sb-feedback="password_check:required">비밀번호 확인은 필수 입력 값입니다.</div>-->
-<!--                                    </div>-->
+                                    <div class="col-6 mt-3 mt-xxl-0 w-auto h-auto">
+
+                                        <div class="alert px-4 py-3 mb-0 d-none warn" role="alert" id="password_alert">
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="requirements leng">
+                                                    <i class="fas fa-check text-success me-2"></i>
+                                                    <i class="fas fa-times text-danger me-3"></i>
+                                                    비밀번호는 최소 8글자 입니다.</li>
+                                                <!--                                        <li class="requirements big-letter">-->
+                                                <!--                                            <i class="fas fa-check text-success me-2"></i>-->
+                                                <!--                                            <i class="fas fa-times text-danger me-3"></i>-->
+                                                <!--                                            비밀번호는 최소 1개의 영문 대문자를 포함해야 합니다.</li>-->
+                                                <li class="requirements num">
+                                                    <i class="fas fa-check text-success me-2"></i>
+                                                    <i class="fas fa-times text-danger me-3"></i>
+                                                    비밀번호는 최소 1개의 숫자를 포함해야 합니다.</li>
+                                                <li class="requirements special-char">
+                                                    <i class="fas fa-check text-success me-2"></i>
+                                                    <i class="fas fa-times text-danger me-3"></i>
+                                                    비밀번호는 최소 1개의 특수문자를 포함해야 합니다.</li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                    <!-- password check input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="password_check" type="password" placeholder="비밀번호를 다시 한번 입력해주세요."/>
+                                        <label for="password_check">비밀번호 확인</label>
+                                        <div class="valid-feedback">일치합니다!</div>
+                                        <div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>
+                                    </div>
 <!--                                    &lt;!&ndash; Phone number input&ndash;&gt;-->
 <!--                                    <div class="form-floating mb-3">-->
 <!--                                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required"/>-->
@@ -111,39 +140,10 @@
                                     <!-- an error submitting the form-->
                                     <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
+                                    <div class="d-grid"><button class="btn btn-primary btn-lg disabled mt-4" id="submitButton" type="submit">Submit</button></div>
                                 </form>
                             </div>
 
-                            <div class="col-6 mt-4 mt-xxl-0 w-auto h-auto">
-
-                                <div
-                                        data-mdb-alert-init class="alert px-4 py-3 mb-0 d-none"
-                                        role="alert"
-                                        data-mdb-color="warning"
-                                        id="password-alert"
-                                >
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="requirements leng">
-                                            <i class="fas fa-check text-success me-2"></i>
-                                            <i class="fas fa-times text-danger me-3"></i>
-                                            비밀번호는 최소 8글자 입니다.</li>
-                                        <li class="requirements big-letter">
-                                            <i class="fas fa-check text-success me-2"></i>
-                                            <i class="fas fa-times text-danger me-3"></i>
-                                            비밀번호는 최소 1개의 영문 대문자를 포함해야 합니다.</li>
-                                        <li class="requirements num">
-                                            <i class="fas fa-check text-success me-2"></i>
-                                            <i class="fas fa-times text-danger me-3"></i>
-                                            비밀번호는 최소 1개의 숫자를 포함해야 합니다.</li>
-                                        <li class="requirements special-char">
-                                            <i class="fas fa-check text-success me-2"></i>
-                                            <i class="fas fa-times text-danger me-3"></i>
-                                            비밀번호는 최소 1개의 특수문자를 포함해야 합니다.</li>
-                                    </ul>
-                                </div>
-
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
         <footer class="bg-white py-4 mt-auto">
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                    <div class="col-auto"><div class="small m-0">Copyright &copy; Your Website 2023</div></div>
+                    <div class="col-auto"><div class="small m-0">Copyright &copy; Your Website 2024</div></div>
                     <div class="col-auto">
                         <a class="small" href="#!">Privacy</a>
                         <span class="mx-1">&middot;</span>
@@ -194,40 +194,57 @@
 
         // 비밀번호 유효성
         addEventListener("DOMContentLoaded", event => {
-            const password = document.getElementById("password-input");
-            const passwordAlert = document.getElementById("password-alert");
+            const id = document.getElementById("id");
+
+            const password = document.getElementById("password");
+            const passwordAlert = document.getElementById("password_alert");
+            const passwordCheck = document.getElementById("password_check")
             const requirements = document.querySelectorAll(".requirements");
             const leng = document.querySelector(".leng");
-            const bigLetter = document.querySelector(".big-letter");
+            // const bigLetter = document.querySelector(".big-letter");
             const num = document.querySelector(".num");
             const specialChar = document.querySelector(".special-char");
 
             requirements.forEach((element) => element.classList.add("wrong"));
 
+            // name.addEventListener("focus", () => {
+            //     if (!name.classList.contains("is-valid")) {
+            //         name.classList.add("is-invalid");
+            //     }
+            // });
+
+            name.addEventListener("input", () => {
+                const value = name.value;
+                if(value) {
+                    name.classList.remove("is-invalid");
+                    name.classList.add("is-valid");
+                } else {
+                    name.classList.remove("is-valid");
+                    name.classList.add("is-invalid");
+                }
+            })
+
             password.addEventListener("focus", () => {
                 passwordAlert.classList.remove("d-none");
-                if (!password.classList.contains("is-valid")) {
-                    password.classList.add("is-invalid");
-                }
             });
 
             password.addEventListener("input", () => {
                 const value = password.value;
                 const isLengthValid = value.length >= 8;
-                const hasUpperCase = /[A-Z]/.test(value);
+                // const hasUpperCase = /[A-Z]/.test(value);
                 const hasNumber = /\d/.test(value);
                 const hasSpecialChar = /[!@#$%^&*()\[\]{}\\|;:'",<.>/?`~]/.test(value);
 
                 leng.classList.toggle("good", isLengthValid);
                 leng.classList.toggle("wrong", !isLengthValid);
-                bigLetter.classList.toggle("good", hasUpperCase);
-                bigLetter.classList.toggle("wrong", !hasUpperCase);
+                // bigLetter.classList.toggle("good", hasUpperCase);
+                // bigLetter.classList.toggle("wrong", !hasUpperCase);
                 num.classList.toggle("good", hasNumber);
                 num.classList.toggle("wrong", !hasNumber);
                 specialChar.classList.toggle("good", hasSpecialChar);
                 specialChar.classList.toggle("wrong", !hasSpecialChar);
 
-                const isPasswordValid = isLengthValid && hasUpperCase && hasNumber && hasSpecialChar;
+                const isPasswordValid = isLengthValid && hasNumber && hasSpecialChar;
 
                 if (isPasswordValid) {
                     password.classList.remove("is-invalid");
@@ -238,6 +255,7 @@
                         element.classList.add("good");
                     });
 
+                    passwordAlert.classList.remove("warn");
                     passwordAlert.classList.remove("alert-warning");
                     passwordAlert.classList.add("alert-success");
                 } else {
@@ -252,6 +270,24 @@
             password.addEventListener("blur", () => {
                 passwordAlert.classList.add("d-none");
             });
+
+            passwordCheck.addEventListener("keyup", () => {
+                const value1 = password.value;
+                const value2 = passwordCheck.value;
+
+                if(value1 === value2) {
+                    if(!value1) {
+                        passwordCheck.classList.remove("is-invalid");
+                        passwordCheck.classList.remove("is-valid");
+                    } else {
+                        passwordCheck.classList.add("is-valid");
+                        passwordCheck.classList.remove("is-invalid");
+                    }
+                } else {
+                    passwordCheck.classList.add("is-invalid");
+                    passwordCheck.classList.remove("is-valid");
+                }
+            })
         });
     </script>
     </body>
