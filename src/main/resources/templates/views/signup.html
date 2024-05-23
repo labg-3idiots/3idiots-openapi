@@ -244,6 +244,15 @@
                 specialChar.classList.toggle("good", hasSpecialChar);
                 specialChar.classList.toggle("wrong", !hasSpecialChar);
 
+                if(passwordCheck.value) {
+                    if(value === passwordCheck.value) {
+                        passwordCheck.classList.add("is-valid");
+                        passwordCheck.classList.remove("is-invalid");
+                    } else {
+                        passwordCheck.classList.add("is-invalid");
+                        passwordCheck.classList.remove("is-valid");
+                    }
+                }
                 const isPasswordValid = isLengthValid && hasNumber && hasSpecialChar;
 
                 if (isPasswordValid) {
