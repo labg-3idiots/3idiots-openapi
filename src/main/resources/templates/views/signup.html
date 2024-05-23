@@ -213,14 +213,14 @@
             //     }
             // });
 
-            name.addEventListener("input", () => {
-                const value = name.value;
+            id.addEventListener("input", () => {
+                const value = id.value;
                 if(value) {
-                    name.classList.remove("is-invalid");
-                    name.classList.add("is-valid");
+                    id.classList.remove("is-invalid");
+                    id.classList.add("is-valid");
                 } else {
-                    name.classList.remove("is-valid");
-                    name.classList.add("is-invalid");
+                    id.classList.remove("is-valid");
+                    id.classList.add("is-invalid");
                 }
             })
 
