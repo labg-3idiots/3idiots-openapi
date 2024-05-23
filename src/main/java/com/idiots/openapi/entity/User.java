@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -60,6 +61,11 @@ public class User {
             throw new Exception400(UserExceptionStatus.USER_ALREADY_DELETED);
         }
         this.status = UserStatus.DELETE;
+    }
+
+    public User hashPassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+        return this;
     }
 
     @Override
