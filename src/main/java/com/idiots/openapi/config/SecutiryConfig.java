@@ -20,7 +20,7 @@ public class SecutiryConfig {
 
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/","/login").permitAll()
+                        .requestMatchers("/","/login", "/css/**", "/js/**", "/assests/**").permitAll()
                         .anyRequest().authenticated()
                 );
 //                .authorizeHttpRequests(authorizeRequest ->
