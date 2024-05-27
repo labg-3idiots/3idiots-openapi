@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-//    private final PasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     public List<UserResponseDto> findAll() {
         return userRepository.findAll()
@@ -52,7 +52,8 @@ public class UserService {
     public UserResponseDto create(UserRequestDto userRequestDto) {
         validateDuplicateEmail(userRequestDto.email());
         User user = userRequestDto.toEntity();
-//        user.hashPassword(bCryptPasswordEncoder);
+        user.userVerified();
+        user.hashPassword(bCryptPasswordEncoder);
 
         try {
             userRepository.save(user);

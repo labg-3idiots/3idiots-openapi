@@ -30,24 +30,27 @@ public class User {
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'INACTIVE'")
-    private UserStatus status = UserStatus.INACTIVE;
+    private UserStatus status;
     @Enumerated(EnumType.STRING)
+    @ColumnDefault("'USER'")
     private UserRole role;
     @CreationTimestamp
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
     @UpdateTimestamp
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
     private LocalDateTime lastLogin;
 
 
     @Builder
-    public User(Long id, String email, String name, String password, String phoneNumber, UserRole role) {
+    public User(Long id, String email, String name, String password, String phoneNumber, UserStatus status, UserRole role, LocalDateTime lastLogin) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.status = status;
         this.role = role;
+        this.lastLogin = LocalDateTime.now();
     }
 
     // 본인인증 완료 후 수행할 method

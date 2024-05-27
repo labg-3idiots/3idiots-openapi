@@ -1,7 +1,9 @@
 package com.idiots.openapi.utils;
 
-import org.springframework.http.HttpStatus;
 
+/**
+ * Api Result 반환 형식 지정 Util
+ */
 public class ApiUtils {
     public static <T> ApiResult<T> success(T response) {
         return new ApiResult<>(true, response, null);
