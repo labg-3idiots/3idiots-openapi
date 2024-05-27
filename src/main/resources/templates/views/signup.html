@@ -65,11 +65,16 @@
                             <div class="col-lg-8 col-xl-6">
                                 <form id="contactForm" class="page-form needs-validation" novalidate>
                                     <!-- Name input-->
-                                    <div class="form-floating mb-4">
-                                        <input class="form-control" id="id" type="text" placeholder="아이디를 입력하세요."/>
-                                        <label for="id">아이디를 입력하세요.</label>
-                                        <div class="invalid-feedback">아이디는 필수 입력 값입니다.</div>
-                                        <div class="valid-feedback">좋습니다!</div>
+                                    <div class="row gx-2 mb-4">
+                                        <div class="col-9 form-floating">
+                                            <input class="form-control col-3" id="id" type="text" placeholder="아이디를 입력하세요."/>
+                                            <label for="id">아이디를 입력하세요.</label>
+                                            <div class="invalid-feedback">아이디는 필수 입력 값입니다.</div>
+                                            <div class="valid-feedback">좋습니다!</div>
+                                        </div>
+                                        <div class="col-3 form-floating ">
+                                            <input class="form-control btn-outline-info pt-3" type="button" value="중복확인"/>
+                                        </div>
                                     </div>
 <!--                                    &lt;!&ndash; ID input&ndash;&gt;-->
 <!--                                    <div class="form-floating mb-3">-->
@@ -79,51 +84,69 @@
 <!--&lt;!&ndash;                                        <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>&ndash;&gt;-->
 <!--                                    </div>-->
                                     <!-- password input -->
-                                    <div class="form-floating mt-2 mb-4">
-                                        <input class="form-control" id="password" type="password" placeholder="비밀번호를 입력하세요." required/>
-                                        <label for="password">비밀번호</label>
-                                        <div class="invalid-feedback">비밀번호 필수 조건을 확인하세요.</div>
-                                        <div class="valid-feedback">좋습니다!</div>
-                                    </div>
-                                    <div class="col-6 mt-3 mt-xxl-0 w-auto h-auto">
-
-                                        <div class="alert px-4 py-3 mb-0 d-none warn" role="alert" id="password_alert">
-                                            <ul class="list-unstyled mb-0">
-                                                <li class="requirements leng">
-                                                    <i class="fas fa-check text-success me-2"></i>
-                                                    <i class="fas fa-times text-danger me-3"></i>
-                                                    비밀번호는 최소 8글자 입니다.</li>
-                                                <!--                                        <li class="requirements big-letter">-->
-                                                <!--                                            <i class="fas fa-check text-success me-2"></i>-->
-                                                <!--                                            <i class="fas fa-times text-danger me-3"></i>-->
-                                                <!--                                            비밀번호는 최소 1개의 영문 대문자를 포함해야 합니다.</li>-->
-                                                <li class="requirements num">
-                                                    <i class="fas fa-check text-success me-2"></i>
-                                                    <i class="fas fa-times text-danger me-3"></i>
-                                                    비밀번호는 최소 1개의 숫자를 포함해야 합니다.</li>
-                                                <li class="requirements special-char">
-                                                    <i class="fas fa-check text-success me-2"></i>
-                                                    <i class="fas fa-times text-danger me-3"></i>
-                                                    비밀번호는 최소 1개의 특수문자를 포함해야 합니다.</li>
-                                            </ul>
+                                    <div class="row gx-2 mb-2">
+                                        <div class="form-floating">
+                                            <input class="form-control" id="password" type="password" placeholder="비밀번호를 입력하세요." required/>
+                                            <label for="password">비밀번호</label>
+                                            <div class="invalid-feedback">비밀번호 필수 조건을 확인하세요.</div>
+                                            <div class="valid-feedback">좋습니다!</div>
                                         </div>
-
+                                        <div class="col-6 mt-3 mt-xxl-0 w-auto h-auto">
+                                            <div class="alert px-4 py-3 mb-0 d-none warn" role="alert" id="password_alert">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="requirements leng">
+                                                        <i class="fas fa-check text-success me-2"></i>
+                                                        <i class="fas fa-times text-danger me-3"></i>
+                                                        비밀번호는 최소 8글자 입니다.</li>
+                                                    <!--                                        <li class="requirements big-letter">-->
+                                                    <!--                                            <i class="fas fa-check text-success me-2"></i>-->
+                                                    <!--                                            <i class="fas fa-times text-danger me-3"></i>-->
+                                                    <!--                                            비밀번호는 최소 1개의 영문 대문자를 포함해야 합니다.</li>-->
+                                                    <li class="requirements num">
+                                                        <i class="fas fa-check text-success me-2"></i>
+                                                        <i class="fas fa-times text-danger me-3"></i>
+                                                        비밀번호는 최소 1개의 숫자를 포함해야 합니다.</li>
+                                                    <li class="requirements special-char">
+                                                        <i class="fas fa-check text-success me-2"></i>
+                                                        <i class="fas fa-times text-danger me-3"></i>
+                                                        비밀번호는 최소 1개의 특수문자를 포함해야 합니다.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!-- password check input-->
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="password_check" type="password" placeholder="비밀번호를 다시 한번 입력해주세요."/>
-                                        <label for="password_check">비밀번호 확인</label>
-                                        <div class="valid-feedback">일치합니다!</div>
-                                        <div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>
+                                    <div class="row gx-2 mb-4">
+                                        <div class="form-floating">
+                                            <input class="form-control" id="password_check" type="password" placeholder="비밀번호를 다시 한번 입력해주세요."/>
+                                            <label for="password_check">비밀번호 확인</label>
+                                            <div class="valid-feedback">일치합니다!</div>
+                                            <div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>
+                                        </div>
                                     </div>
-<!--                                    &lt;!&ndash; Phone number input&ndash;&gt;-->
-<!--                                    <div class="form-floating mb-3">-->
-<!--                                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required"/>-->
-<!--                                        <label for="phone">핸드폰 번호</label>-->
-<!--                                        <div class="invalid-feedback" data-sb-feedback="phone:required">핸드폰 번호는 필수 입력 값입니다.</div>-->
-<!--                                    </div>-->
+                                    <!-- Phone number input-->
+                                    <div class="row gx-2 mb-4">
+                                        <div class="col-9 form-floating">
+                                            <input class="form-control col-3" id="phone" type="tel" placeholder="(123) 456-7890"/>
+                                            <label for="phone">핸드폰 번호(-빼고 입력해주세요)</label>
+                                            <div class="invalid-feedback">핸드폰 번호는 필수 입력 값입니다.</div>
+                                        </div>
+                                        <div class="col-3 form-floating ">
+                                            <input class="form-control btn-outline-info pt-3" type="button" value="본인인증"/>
+                                        </div>
+                                    </div>
+                                    <!-- Verify number input-->
+                                    <!-- 추후에 인증 개발완료되면 d-none 추가 -->
+                                    <div class="row gx-2 mt-2 mb-4">
+                                        <div class="col-4 offset-5 form-floating">
+                                            <input class="form-control" id="verify"/>
+                                            <label for="verify">인증번호</label>
+                                            <div class="invalid-feedback">인증번호가 일치하지 않습니다.</div>
+                                        </div>
+                                        <div class="col-3 form-floating ">
+                                            <input class="form-control btn-outline-info pt-3" type="button" value="인증확인"/>
+                                        </div>
+                                    </div>
                                     <!-- Submit success message-->
-                                    <!---->
                                     <!-- This is what your users will see when the form-->
                                     <!-- has successfully submitted-->
                                     <div class="d-none" id="submitSuccessMessage">
@@ -140,7 +163,7 @@
                                     <!-- an error submitting the form-->
                                     <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button class="btn btn-primary btn-lg disabled mt-4" id="submitButton" type="submit">Submit</button></div>
+                                    <div class="d-grid"><button class="btn btn-primary btn-lg disabled mt-4" id="submitButton" type="submit">회원가입</button></div>
                                 </form>
                             </div>
 
