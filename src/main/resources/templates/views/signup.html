@@ -49,11 +49,11 @@
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
-                                <form id="contactForm" class="page-form needs-validation" novalidate>
+<!--                                <form id="contactForm" class="page-form needs-validation" th:action="@{/users/signup}" method="post" novalidate>-->
                                     <!-- Name input-->
                                     <div class="row gx-2 mb-4">
                                         <div class="col-9 form-floating">
-                                            <input class="form-control col-3" id="id" type="text" placeholder="아이디를 입력하세요."/>
+                                            <input class="form-control col-3" id="id" name="email" type="text" placeholder="아이디를 입력하세요."/>
                                             <label for="id">아이디를 입력하세요.</label>
                                             <div class="invalid-feedback">아이디는 필수 입력 값입니다.</div>
                                             <div class="valid-feedback">좋습니다!</div>
@@ -72,7 +72,7 @@
                                     <!-- password input -->
                                     <div class="row gx-2 mb-2">
                                         <div class="form-floating">
-                                            <input class="form-control" id="password" type="password" placeholder="비밀번호를 입력하세요." required/>
+                                            <input class="form-control" id="password" name="password" type="password" placeholder="비밀번호를 입력하세요." required/>
                                             <label for="password">비밀번호</label>
                                             <div class="invalid-feedback">비밀번호 필수 조건을 확인하세요.</div>
                                             <div class="valid-feedback">좋습니다!</div>
@@ -112,7 +112,7 @@
                                     <!-- Phone number input-->
                                     <div class="row gx-2 mb-4">
                                         <div class="col-9 form-floating">
-                                            <input class="form-control col-3" id="phone" type="tel" placeholder="(123) 456-7890"/>
+                                            <input class="form-control col-3" id="phone" name="phoneNumber" type="tel" placeholder="(123) 456-7890"/>
                                             <label for="phone">핸드폰 번호(-빼고 입력)</label>
                                             <div class="invalid-feedback">핸드폰 번호는 필수 입력 값입니다.</div>
                                         </div>
@@ -149,8 +149,8 @@
                                     <!-- an error submitting the form-->
                                     <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button class="btn btn-primary btn-lg disabled mt-4" id="submitButton" type="submit">회원가입</button></div>
-                                </form>
+                                    <div class="d-grid"><button class="btn bg-gradient-dark btn-lg mt-4" id="btnSignup" onclick="btnSignup()">회원가입</button></div>
+<!--                                </form>-->
                             </div>
 
                         </div>
@@ -167,39 +167,39 @@
         <script src="/js/mdb.umd.min.js"></script>
     <script>
         // 회원가입 FORM 제출 시 유효성 검사
-        (() => {
-            'use strict'
+        // (() => {
+        //     'use strict'
+        //
+        //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        //     const forms = document.querySelectorAll('.needs-validation')
+        //
+        //     // Loop over them and prevent submission
+        //     Array.from(forms).forEach(form => {
+        //         form.addEventListener('submit', event => {
+        //
+        //             if (!form.checkValidity()) {
+        //                 event.preventDefault()
+        //                 event.stopPropagation()
+        //             }
+        //
+        //             form.classList.add('was-validated')
+        //         }, false)
+        //     })
+        // })()
 
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll('.needs-validation')
-
-            // Loop over them and prevent submission
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
+        const id = document.getElementById("id");
+        const password = document.getElementById("password");
+        const passwordAlert = document.getElementById("password_alert");
+        const passwordCheck = document.getElementById("password_check");
+        const phoneNumber = document.getElementById("phone");
+        const requirements = document.querySelectorAll(".requirements");
+        const leng = document.querySelector(".leng");
+        // const bigLetter = document.querySelector(".big-letter");
+        const num = document.querySelector(".num");
+        const specialChar = document.querySelector(".special-char");
 
         // 비밀번호 유효성
         addEventListener("DOMContentLoaded", event => {
-            const id = document.getElementById("id");
-
-            const password = document.getElementById("password");
-            const passwordAlert = document.getElementById("password_alert");
-            const passwordCheck = document.getElementById("password_check")
-            const requirements = document.querySelectorAll(".requirements");
-            const leng = document.querySelector(".leng");
-            // const bigLetter = document.querySelector(".big-letter");
-            const num = document.querySelector(".num");
-            const specialChar = document.querySelector(".special-char");
-
             requirements.forEach((element) => element.classList.add("wrong"));
 
             // name.addEventListener("focus", () => {
@@ -293,6 +293,28 @@
                 }
             })
         });
+
+        function btnSignup() {
+            console.log(password.value);
+            fetch("/users/signup", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    // username: document.getElementById("username").value,
+                    // password: document.getElementById("password").value
+                    email: id.value,
+                    password: password.value,
+                    phoneNumber: phoneNumber.value
+                }),
+            }).then((res) => {
+                if(res.ok) {
+                    alert("회원가입이 완료되었습니다!!")
+                    window.location.href = '/signin';
+                }
+            })
+        }
     </script>
     </body>
 </html>

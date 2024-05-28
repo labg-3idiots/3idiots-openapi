@@ -4,7 +4,6 @@ import com.idiots.openapi.dto.UserRequestDto;
 import com.idiots.openapi.service.UserService;
 import com.idiots.openapi.utils.ApiUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +47,6 @@ public class UserController {
     public ResponseEntity<?> signup(
             @RequestBody UserRequestDto userRequestDto
     ) {
-
         return ResponseEntity.ok(ApiUtils.success(userService.create(userRequestDto)));
     }
 }

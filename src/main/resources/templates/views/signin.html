@@ -72,7 +72,6 @@
         </section>
         <th:block th:replace="~{/views/footer.html :: footer}"></th:block>
     </main>
-    <script src="/js/jquery-3.7.1.min.js"></script>
     <script>
         function btnLogin() {
             fetch("/login", {
@@ -81,6 +80,14 @@
                     username: document.getElementById("username").value,
                     password: document.getElementById("password").value
                 }),
+            }).then((res) => {
+                if(res.ok) {
+                    window.location.href = '/';
+                } else {
+                    res.json().then((error) => {
+                        alert(error.body.error.message);
+                    }); 
+                }
             })
         }
     </script>

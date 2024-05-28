@@ -1,10 +1,15 @@
 package com.idiots.openapi.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.idiots.openapi.exception.Exception400;
+import com.idiots.openapi.exception.user.UserExceptionStatus;
+import com.idiots.openapi.utils.ApiUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 
+@Slf4j
 public class CustomAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -39,7 +45,10 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
         // ID, PASSWORD 가 있는지 확인
         if(!StringUtils.hasLength(loginDto.getUsername())
                 || !StringUtils.hasLength(loginDto.getPassword())) {
-            throw new IllegalArgumentException("username or password is empty");
+
+            loginExceptionHandler(response, UserExceptionStatus.ID_OR_PASSWORD_NULL);
+//            throw new IllegalArgumentException("username or password is empty");
+            return null;
         }
 
         // 처음에는 인증 되지 않은 토큰 생성
@@ -62,11 +71,23 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
         return false;
     }
 
-
     @Data
     public static class LoginDto {
         private String username;
         private String password;
+    }
+
+    // 로그인 중 Filter에서 오류가 발생했을 때, Exception 처리 값을 클라이언트에게 알려줌
+    public void loginExceptionHandler(HttpServletResponse response,  UserExceptionStatus error) {
+        response.setStatus(error.getStatus());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try {
+            String json = new ObjectMapper().writeValueAsString(ResponseEntity.ok(ApiUtils.error(error.getMessage(), error.getStatus(), error.getErrorCode())));
+            response.getWriter().write(json);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 
 }
