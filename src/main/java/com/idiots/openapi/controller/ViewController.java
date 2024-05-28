@@ -25,15 +25,7 @@ public class ViewController {
     }
 
     @GetMapping("/signin")
-    public String signin(HttpSession session) {
-        session.setAttribute("loginUser", "Test");
-        return "redirect:/";
-//        return "views/signin";
-    }
-
-    @GetMapping("/signout")
-    public String signout(HttpSession session) {
-        session.removeAttribute("loginUser");
-        return "redirect:/";
+    public String signin() {
+        return "views/signin";
     }
 }

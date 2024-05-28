@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/","/login", "/users/*", "/css/**", "/js/**", "/assets/**").permitAll()
+                        .requestMatchers("/","/signin", "/signup", "/login", "/users/signup", "/css/**", "/js/**", "/assets/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 // successHandler, failureHandler추가

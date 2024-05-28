@@ -11712,23 +11712,40 @@ html {
     height: 35vw;
     width: 35vw;
   }
+
   .profile .profile-img {
     height: 40vw;
   }
+
   .profile .dots-1 {
     width: 1.5vw;
     right: 0.75vw;
   }
+
   .profile .dots-2 {
     width: 1.5vw;
     right: -2vw;
   }
+
   .profile .dots-3 {
     width: 1.5vw;
     left: 0.75vw;
   }
+
   .profile .dots-4 {
     width: 1.5vw;
     left: -2vw;
   }
+}
+
+.bg-gradient-dark {
+  background-image: linear-gradient(310deg, #212229 0%, #212529 100%);
+}
+
+.btn.bg-gradient-dark {
+  color: #fff;
+}
+
+.btn.bg-gradient-dark:hover {
+  color: rgba(255, 255, 255, 0.8);
 }
