@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -30,29 +30,29 @@
                         <div class="col-xxl-5 mb-auto">
                             <!-- 회원 정보 div -->
                             <div class="row border border-1 rounded">
-                                <div th:if="${session.loginUser == null}" >
+                                <div sec:authorize="!isAuthenticated()">
                                     <div class="text-center">
                                         <div class="fs-3 fw-light text-black-50 mt-5 mb-3">로그인 후 이용해주세요</div>
                                         <div class="d-grid gap-3 d-sm-flex justify-content-center mb-5">
-                                            <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/signin">로그인</a>
+                                            <a class="btn bg-gradient-dark btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/signin">로그인</a>
                                             <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" href="/signup">회원가입</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div th:if="${session.loginUser != null}">
+                                <div sec:authorize="isAuthenticated()">
                                     <div class="text-center">
                                         <div class="fs-3 fw-light text-black-50 mt-5 mb-3">
-                                            <span th:text="${session.loginUser}"></span> 님 안녕하세요!!
+                                            <span th:text="${#authentication.name}"></span> 님 안녕하세요!!
                                         </div>
                                         <div class="d-grid gap-3 d-sm-flex justify-content-center mb-5">
-                                            <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/signout">로그아웃</a>
+                                            <a class="btn bg-gradient-dark btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/logout">로그아웃</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- 기타 정보 창 -->
                             <div class="row mt-2 mb-5 border border-1 rounded">
-                                <div th:if="${session.loginUser == null}" >
+                                <div>
                                     <div class="text-center">
                                         <div class="fs-3 fw-light text-black-50 mt-5 mb-5">
                                             세 얼간이 토이 프로젝트
@@ -61,7 +61,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div th:if="${session.loginUser != null}">
+                                <div sec:authorize="isAuthenticated()">
                                     <div class="text-center">
                                         <div class="fs-3 fw-light text-black-50 mt-5 mb-5">
                                             구독 서비스 관련 div
