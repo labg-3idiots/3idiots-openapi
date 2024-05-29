@@ -65,11 +65,9 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
         Authentication authenticate = getAuthenticationManager().authenticate(token);
 
         // Remember Me 기능 처리
-        if ("on".equals(loginDto.getRemember())) {
-            RememberMeServices rememberMeServices = getRememberMeServices();
-            if (rememberMeServices != null) {
-                rememberMeServices.loginSuccess(request, response, authenticate);
-            }
+        CustomRememberMeServices rememberMeServices = (CustomRememberMeServices) getRememberMeServices();
+        if(rememberMeServices != null) {
+            rememberMeServices.loginSuccess(request, response, authenticate, loginDto.getRemember());
         }
 
         return authenticate;
@@ -87,7 +85,7 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
     public static class LoginDto {
         private String username;
         private String password;
-        private String remember;
+        private Boolean remember;
     }
 
     // 로그인 중 Filter에서 오류가 발생했을 때, Exception 처리 값을 클라이언트에게 알려줌

@@ -103,10 +103,9 @@ public class SecurityConfig {
 
     @Bean
     public TokenBasedRememberMeServices tokenBasedRememberMeServices() {
-        TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices("mySecretKey", customUserDetailsService);
+        TokenBasedRememberMeServices rememberMeServices = new CustomRememberMeServices("mySecretKey", customUserDetailsService);
         rememberMeServices.setAlwaysRemember(false);
         rememberMeServices.setTokenValiditySeconds(3600);
-
 
         return rememberMeServices;
     }
