@@ -8,12 +8,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -60,6 +64,14 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
         // AuthenticationManager 에게 인증 처리
         Authentication authenticate = getAuthenticationManager().authenticate(token);
 
+        // Remember Me 기능 처리
+        if ("on".equals(loginDto.getRemember())) {
+            RememberMeServices rememberMeServices = getRememberMeServices();
+            if (rememberMeServices != null) {
+                rememberMeServices.loginSuccess(request, response, authenticate);
+            }
+        }
+
         return authenticate;
     }
 
@@ -75,6 +87,7 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
     public static class LoginDto {
         private String username;
         private String password;
+        private String remember;
     }
 
     // 로그인 중 Filter에서 오류가 발생했을 때, Exception 처리 값을 클라이언트에게 알려줌

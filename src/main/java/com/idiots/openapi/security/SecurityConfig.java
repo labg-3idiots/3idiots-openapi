@@ -13,7 +13,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.context.DelegatingSecurityContextRepository;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
@@ -27,6 +29,7 @@ public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -69,10 +72,9 @@ public class SecurityConfig {
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.sendRedirect("/");
                         })
-                );
-        http
-                .rememberMe(remember -> remember
-                        .tokenValiditySeconds(3600)//만료시간
+                )
+                .rememberMe((remember) -> remember
+                        .rememberMeServices(tokenBasedRememberMeServices())
                 );
         return http.build();
     }
@@ -82,6 +84,7 @@ public class SecurityConfig {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
         customAuthenticationFilter.setAuthenticationManager(authenticationManager());
         customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
+        customAuthenticationFilter.setRememberMeServices(tokenBasedRememberMeServices());
 
         // **
         customAuthenticationFilter.setSecurityContextRepository(
@@ -96,5 +99,15 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public TokenBasedRememberMeServices tokenBasedRememberMeServices() {
+        TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices("mySecretKey", customUserDetailsService);
+        rememberMeServices.setAlwaysRemember(false);
+        rememberMeServices.setTokenValiditySeconds(3600);
+
+
+        return rememberMeServices;
     }
 }
