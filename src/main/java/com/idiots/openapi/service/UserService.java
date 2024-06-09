@@ -47,6 +47,20 @@ public class UserService {
         }
     }
 
+    // 핸드폰 번호 중복 검사 체크
+    private void validateDuplicatePhoneNumber(String phoneNumber) {
+        if(userRepository.existsByPhoneNumber(phoneNumber)){
+            throw new Exception400(UserExceptionStatus.PHONE_NUMBER_ALREADY_EXIST);
+        }
+    }
+
+    public UserResponseDto verifyPhoneNumber(UserRequestDto userRequestDto) {
+        validateDuplicatePhoneNumber(userRequestDto.phoneNumber());
+        User user = userRequestDto.toEntity();
+
+        return UserResponseDto.of(user);
+    }
+
     // 회원가입
     @Transactional
     public UserResponseDto create(UserRequestDto userRequestDto) {

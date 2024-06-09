@@ -117,7 +117,7 @@
                                             <div class="invalid-feedback">핸드폰 번호는 필수 입력 값입니다.</div>
                                         </div>
                                         <div class="col-3 form-floating ">
-                                            <input class="form-control btn-outline-info pt-3" type="button" value="본인인증"/>
+                                            <input class="form-control btn-outline-info pt-3" type="button" value="본인인증" onclick="btnIdentityVerification()"/>
                                         </div>
                                     </div>
                                     <!-- Verify number input-->
@@ -312,6 +312,23 @@
                 if(res.ok) {
                     alert("회원가입이 완료되었습니다!!")
                     window.location.href = '/signin';
+                }
+            })
+        }
+
+        function btnIdentityVerification() {
+            fetch("/users/verify/phonenumber", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: id.value,
+                    phoneNumber: phoneNumber.value
+                })
+            }).then((res) => {
+                if(res.ok) {
+                    alert("인증번호를 입력해주세요.")
                 }
             })
         }
