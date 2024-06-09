@@ -38,6 +38,13 @@ public class UserController {
         return ResponseEntity.ok(ApiUtils.success(userService.findById(userId)));
     }
 
+    @PostMapping("/verify/phonenumber")
+    public ResponseEntity<?> verifyPhnoeNumber(
+        @RequestBody UserRequestDto userRequestDto
+    ){
+        return ResponseEntity.ok(ApiUtils.success(userService.verifyPhoneNumber(userRequestDto)));
+    }
+
     /**
      * 회원가입
      * @Parameter
