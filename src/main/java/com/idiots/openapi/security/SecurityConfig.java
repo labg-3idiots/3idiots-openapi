@@ -105,7 +105,7 @@ public class SecurityConfig {
     public TokenBasedRememberMeServices tokenBasedRememberMeServices() {
         TokenBasedRememberMeServices rememberMeServices = new CustomRememberMeServices("mySecretKey", customUserDetailsService);
         rememberMeServices.setAlwaysRemember(false);
-        rememberMeServices.setTokenValiditySeconds(3600);
+        rememberMeServices.setTokenValiditySeconds(900);
 
         return rememberMeServices;
     }
