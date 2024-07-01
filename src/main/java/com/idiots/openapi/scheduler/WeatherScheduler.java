@@ -1,8 +1,18 @@
 package com.idiots.openapi.scheduler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.idiots.openapi.dto.ApiParamDto;
 import com.idiots.openapi.dto.UserInterestRegionDto;
+import com.idiots.openapi.dto.WeatherResponseDto;
+import com.idiots.openapi.dto.WeatherResponseJsonDto;
+import com.idiots.openapi.entity.Region;
+import com.idiots.openapi.entity.RegionWeather;
+import com.idiots.openapi.entity.User;
+import com.idiots.openapi.repository.RegionRepository;
+import com.idiots.openapi.repository.RegionWeatherRepository;
+import com.idiots.openapi.repository.UserRepository;
 import com.idiots.openapi.service.OpenapiService;
 import com.idiots.openapi.service.RegionWeatherService;
 import com.idiots.openapi.service.UserInterestRegionService;
@@ -13,9 +23,11 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 // 단기예보조회 API를 통해 데이터를 읽어오고, 읽어온 데이터를 정제해서 DB INSERT하는 스케줄러
+// 기능 개발이 완료되면, 각각 기능들을 method화(조회, 삽입 등)
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -23,11 +35,15 @@ public class WeatherScheduler {
     private final OpenapiService openapiService;
     private final RegionWeatherService regionWeatherService;
     private final UserInterestRegionService userInterestRegionService;
+    private final RegionWeatherRepository regionWeatherRepository;
+
     private static final DateTimeFormatter fomatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final UserRepository userRepository;
+    private final RegionRepository regionRepository;
 
-//    @Scheduled(cron = "0 0/5 * * * ?")
-    @Scheduled(fixedRate = 3000)
+    //    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(fixedRate = 30000)
     public void run() {
         String now = fomatter.format(LocalDate.now());
         log.info("현재시간 : {}", now);
@@ -49,8 +65,34 @@ public class WeatherScheduler {
             String openapiResult = openapiService.getOpenapi(apiParamDto).block(); // 동기처리
             log.info("단기예보 조회 결과 : {}", openapiResult);
 
-            // 조회 데이터로 정제하기(SKY(하늘상태) : 4(흐림), PTY(강수형태) : 0(없음),1(비),2(비/눈),3(눈),4(소나기))
-        }
+            /**
+             * 조회 데이터로 정제하기
+             * SKY(하늘상태) : 4(흐림)
+             * PTY(강수형태) : 0(없음),1(비),2(비/눈),3(눈),4(소나기)
+             */
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            List<RegionWeather> resultList = new ArrayList<>();
 
+            try {
+                WeatherResponseJsonDto weatherResponseJsonDto = objectMapper.readValue(openapiResult, WeatherResponseJsonDto.class);
+                log.info("DTO 결과 : {}", weatherResponseJsonDto.getResponse().getBody().getItems().getItem());
+                List<WeatherResponseDto> weatherResponseDtoList = weatherResponseJsonDto.getResponse().getBody().getItems().getItem();
+
+                User user = userRepository.findById(userInterestRegionDto.userId()).get();
+                Region region = regionRepository.findById(userInterestRegionDto.regionCode()).get();
+
+                for(WeatherResponseDto weatherResponseDto : weatherResponseDtoList) {
+                    if(weatherResponseDto.category().equals("PTY") || weatherResponseDto.category().equals("SKY")) {
+                        log.info("강수형태 || 하늘상태 dto : {}", weatherResponseDto);
+                        // weatherResponseDto에 user, region 삽입해야하나?(dto 필드에 entity로 생성하는게 맞는지?)
+                        // entity변환 전, user와 region 데이터 처리해야함(enttiy에서 setter 지양함)
+                        resultList.add(weatherResponseDto.toEntity());
+                    }
+                }
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            log.info("DB INSERT LIST : {}", resultList);
+        }
     }
 }

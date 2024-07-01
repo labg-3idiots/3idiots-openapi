@@ -2,14 +2,13 @@ package com.idiots.openapi.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "region_weather")
+@ToString
 public class RegionWeather {
 
     @Id
@@ -18,22 +17,34 @@ public class RegionWeather {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Region region;
-
-    @Column
+    @Column(length = 8)
     private String date;
 
-    @Column
+    @Column(length = 4)
     private String time;
 
-    @Schema(description = "하늘 상태", example = "3")
-    @Column
-    private Integer sky_condition;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_code")
+    private Region region;
 
-    @Schema(description = "강수 형태", example = "1")
-    @Column
-    private Integer pty_condition;
+    @Schema(description = "카테고리", example = "PTY")
+    @Column(length = 10)
+    private String category;
+
+    @Schema(description = "상태", example = "3")
+    @Column(length = 10)
+    private String condition;
+
+    @Builder
+    public RegionWeather(User user, String date, String time, Region region, String category, String condition) {
+        this.user = user;
+        this.date = date;
+        this.time = time;
+        this.region = region;
+        this.category = category;
+        this.condition = condition;
+    }
 }
