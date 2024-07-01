@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,13 @@ public class Region {
 
     @Schema(description = "격자 Y", example = "126")
     private int y;
+
+    @Builder
+    public Region(String regionCode, String firstRegion, String secondRegion, int x, int y) {
+        this.regionCode = regionCode;
+        this.firstRegion = firstRegion;
+        this.secondRegion = secondRegion;
+        this.x = x;
+        this.y = y;
+    }
 }

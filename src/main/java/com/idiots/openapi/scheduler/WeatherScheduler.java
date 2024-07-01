@@ -78,15 +78,13 @@ public class WeatherScheduler {
                 log.info("DTO 결과 : {}", weatherResponseJsonDto.getResponse().getBody().getItems().getItem());
                 List<WeatherResponseDto> weatherResponseDtoList = weatherResponseJsonDto.getResponse().getBody().getItems().getItem();
 
-                User user = userRepository.findById(userInterestRegionDto.userId()).get();
-                Region region = regionRepository.findById(userInterestRegionDto.regionCode()).get();
-
                 for(WeatherResponseDto weatherResponseDto : weatherResponseDtoList) {
                     if(weatherResponseDto.category().equals("PTY") || weatherResponseDto.category().equals("SKY")) {
                         log.info("강수형태 || 하늘상태 dto : {}", weatherResponseDto);
                         // weatherResponseDto에 user, region 삽입해야하나?(dto 필드에 entity로 생성하는게 맞는지?)
                         // entity변환 전, user와 region 데이터 처리해야함(enttiy에서 setter 지양함)
-                        resultList.add(weatherResponseDto.toEntity());
+                        resultList.add(weatherResponseDto.toEntity(userInterestRegionDto.userId(),
+                                userInterestRegionDto.regionCode()));
                     }
                 }
             } catch (JsonProcessingException e) {
