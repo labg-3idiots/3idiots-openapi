@@ -3,6 +3,7 @@ package com.idiots.openapi.service;
 import com.idiots.openapi.dto.UserRequestDto;
 import com.idiots.openapi.dto.UserResponseDto;
 import com.idiots.openapi.entity.User;
+import com.idiots.openapi.entity.VerificationData;
 import com.idiots.openapi.exception.BaseExceptionStatus;
 import com.idiots.openapi.exception.Exception400;
 import com.idiots.openapi.exception.Exception404;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -24,6 +27,9 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
+    private final BizmService bizmService;
+
+    private ConcurrentHashMap<String, VerificationData> verificationCodes = new ConcurrentHashMap<String, VerificationData>();
 
     public List<UserResponseDto> findAll() {
         return userRepository.findAll()
@@ -52,12 +58,28 @@ public class UserService {
         if(userRepository.existsByPhoneNumber(phoneNumber)){
             throw new Exception400(UserExceptionStatus.PHONE_NUMBER_ALREADY_EXIST);
         }
+
+        String verificationCode = getVerificationCode();
+        long currentTime = System.currentTimeMillis();
+        verificationCodes.put(phoneNumber, new VerificationData(verificationCode, currentTime));
+    }
+
+    // 6자리 난수 생성
+    private String getVerificationCode() {
+        Random random = new Random();
+
+        StringBuilder randomCodes = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            randomCodes.append(random.nextInt(10));
+        }
+        return randomCodes.toString();
     }
 
     public UserResponseDto verifyPhoneNumber(UserRequestDto userRequestDto) {
         validateDuplicatePhoneNumber(userRequestDto.phoneNumber());
-        User user = userRequestDto.toEntity();
 
+
+        User user = userRequestDto.toEntity();
         return UserResponseDto.of(user);
     }
 
