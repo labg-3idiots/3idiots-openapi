@@ -16,15 +16,11 @@ public class RegionWeather {
     @Column(name = "REGION_WEATHER_ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Column(length = 8)
-    private String date;
+    private String fcstDate;
 
     @Column(length = 4)
-    private String time;
+    private String fcstTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_code")
@@ -36,15 +32,14 @@ public class RegionWeather {
 
     @Schema(description = "상태", example = "3")
     @Column(length = 10)
-    private String condition;
+    private String fcstValue;
 
     @Builder
-    public RegionWeather(User user, String date, String time, Region region, String category, String condition) {
-        this.user = user;
-        this.date = date;
-        this.time = time;
+    public RegionWeather(String fcstDate, String fcstTime, Region region, String category, String fcstValue) {
+        this.fcstDate = fcstDate;
+        this.fcstTime = fcstTime;
         this.region = region;
         this.category = category;
-        this.condition = condition;
+        this.fcstValue = fcstValue;
     }
 }

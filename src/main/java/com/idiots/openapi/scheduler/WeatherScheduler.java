@@ -26,8 +26,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-// 단기예보조회 API를 통해 데이터를 읽어오고, 읽어온 데이터를 정제해서 DB INSERT하는 스케줄러
-// 기능 개발이 완료되면, 각각 기능들을 method화(조회, 삽입 등)
+/**
+ * 단기예보조회 API를 통해 데이터를 읽어오고, 읽어온 데이터를 정제해서 DB INSERT하는 스케줄러
+ * 매일 오전 3시에 실행
+*/
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -35,20 +38,17 @@ public class WeatherScheduler {
     private final OpenapiService openapiService;
     private final RegionWeatherService regionWeatherService;
     private final UserInterestRegionService userInterestRegionService;
-    private final RegionWeatherRepository regionWeatherRepository;
 
     private static final DateTimeFormatter fomatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final UserRepository userRepository;
-    private final RegionRepository regionRepository;
 
-    //    @Scheduled(cron = "0 0/5 * * * ?")
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(cron = "0 0 3 * * *") // 매일 오전 3시에 실행
+//    @Scheduled(fixedRate = 30000)
     public void run() {
         String now = fomatter.format(LocalDate.now());
-        log.info("현재시간 : {}", now);
+        log.info("현재날짜 : {}", now);
 
-        List<UserInterestRegionDto> userInterestRegionList = userInterestRegionService.findAll();
+        List<UserInterestRegionDto> userInterestRegionList = userInterestRegionService.selectUserInterestRegionList();
         log.info("관심지역 테이블 : {}", userInterestRegionList);
 
         // 단기예보 조회를 위한 데이터 바인딩
@@ -67,30 +67,31 @@ public class WeatherScheduler {
 
             /**
              * 조회 데이터로 정제하기
-             * SKY(하늘상태) : 4(흐림)
              * PTY(강수형태) : 0(없음),1(비),2(비/눈),3(눈),4(소나기)
              */
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            List<RegionWeather> resultList = new ArrayList<>();
-
-            try {
-                WeatherResponseJsonDto weatherResponseJsonDto = objectMapper.readValue(openapiResult, WeatherResponseJsonDto.class);
-                log.info("DTO 결과 : {}", weatherResponseJsonDto.getResponse().getBody().getItems().getItem());
-                List<WeatherResponseDto> weatherResponseDtoList = weatherResponseJsonDto.getResponse().getBody().getItems().getItem();
-
-                for(WeatherResponseDto weatherResponseDto : weatherResponseDtoList) {
-                    if(weatherResponseDto.category().equals("PTY") || weatherResponseDto.category().equals("SKY")) {
-                        log.info("강수형태 || 하늘상태 dto : {}", weatherResponseDto);
-                        // weatherResponseDto에 user, region 삽입해야하나?(dto 필드에 entity로 생성하는게 맞는지?)
-                        // entity변환 전, user와 region 데이터 처리해야함(enttiy에서 setter 지양함)
-                        resultList.add(weatherResponseDto.toEntity(userInterestRegionDto.userId(),
-                                userInterestRegionDto.regionCode()));
-                    }
-                }
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            log.info("DB INSERT LIST : {}", resultList);
+            regionWeatherService.insertRegionWeatherList(resultAddList(openapiResult, userInterestRegionDto));
+            log.info("DB INSERT LIST : {}", resultAddList(openapiResult, userInterestRegionDto));
         }
+    }
+
+    // 조회한 데이터 정제 후 RegionWeather List에 담는 메서드
+    public List<RegionWeather> resultAddList(String openapiResult, UserInterestRegionDto userInterestRegionDto) {
+        List<RegionWeather> resultList = new ArrayList<>();
+        try {
+            WeatherResponseJsonDto weatherResponseJsonDto = objectMapper.readValue(openapiResult, WeatherResponseJsonDto.class);
+            log.info("DTO 결과 : {}", weatherResponseJsonDto.getResponse().getBody().getItems().getItem());
+            List<WeatherResponseDto> weatherResponseDtoList = weatherResponseJsonDto.getResponse().getBody().getItems().getItem();
+
+            for(WeatherResponseDto weatherResponseDto : weatherResponseDtoList) {
+                if(weatherResponseDto.category().equals("PTY")) {
+                    log.info("강수형태 dto : {}", weatherResponseDto);
+                    resultList.add(weatherResponseDto.toEntity(userInterestRegionDto.regionCode()));
+                }
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return resultList;
     }
 }

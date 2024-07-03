@@ -10,24 +10,30 @@ import lombok.Setter;
 public record WeatherResponseDto(
         String fcstDate,
         String fcstTime,
-        String category,
         String fcstValue,
-        Long userId,
+        String category,
         String regionCode
 ) {
 
-    public RegionWeather toEntity(Long userId, String regionCode) {
+    public RegionWeather toEntity(String regionCode) {
         return RegionWeather.builder()
-                .date(fcstDate())
-                .time(fcstTime())
+                .fcstDate(fcstDate())
+                .fcstTime(fcstTime())
+                .fcstValue(fcstValue())
                 .category(category())
-                .condition(fcstValue())
                 .region(Region.builder()
                         .regionCode(regionCode)
                         .build())
-                .user(User.builder()
-                        .id(userId)
-                        .build())
+                .build();
+    }
+
+    public static WeatherResponseDto of(RegionWeather regionWeather) {
+        return WeatherResponseDto.builder()
+                .fcstDate(regionWeather.getFcstDate())
+                .fcstTime(regionWeather.getFcstTime())
+                .fcstValue(regionWeather.getFcstValue())
+                .regionCode(regionWeather.getRegion().getRegionCode())
+                .category(regionWeather.getCategory())
                 .build();
     }
 }

@@ -15,9 +15,11 @@ import java.util.List;
 public class UserInterestRegionService {
     private final UserInterestRegionRepository userInterestRegionRepository;
 
+    // region_code가 같은 것은 조회X(openapi 호출 시, 같은 지역은 조회안하기 위함)
     @Transactional(readOnly = true)
-    public List<UserInterestRegionDto> findAll() {
-        return userInterestRegionRepository.findAll().stream()
+    public List<UserInterestRegionDto> selectUserInterestRegionList() {
+        return userInterestRegionRepository.findAllDistinctRegionCode()
+                .stream()
                 .map(UserInterestRegionDto::of)
                 .toList();
     }
