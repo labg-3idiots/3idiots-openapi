@@ -1,6 +1,8 @@
 package com.idiots.openapi.controller;
 
+import com.idiots.openapi.dto.KakaoTalkAlarmRequestDto;
 import com.idiots.openapi.dto.UserRequestDto;
+import com.idiots.openapi.service.BizmService;
 import com.idiots.openapi.service.UserService;
 import com.idiots.openapi.utils.ApiUtils;
 import jakarta.websocket.server.PathParam;
@@ -16,6 +18,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final BizmService bizmService;
 
     /**
      * 사용자 전체 조회
