@@ -9,7 +9,8 @@ import lombok.Builder;
 public record UserRequestDto(
         String email,
         String password,
-        String phoneNumber
+        String phoneNumber,
+        String verificationCode
 ) {
 
     public User toEntity() {

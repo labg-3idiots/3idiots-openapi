@@ -58,10 +58,6 @@ public class UserService {
         if(userRepository.existsByPhoneNumber(phoneNumber)){
             throw new Exception400(UserExceptionStatus.PHONE_NUMBER_ALREADY_EXIST);
         }
-
-        String verificationCode = getVerificationCode();
-        long currentTime = System.currentTimeMillis();
-        verificationCodes.put(phoneNumber, new VerificationData(verificationCode, currentTime));
     }
 
     // 6자리 난수 생성
@@ -75,12 +71,42 @@ public class UserService {
         return randomCodes.toString();
     }
 
-    public UserResponseDto verifyPhoneNumber(UserRequestDto userRequestDto) {
+    public String sendVerificationCode(UserRequestDto userRequestDto) {
         validateDuplicatePhoneNumber(userRequestDto.phoneNumber());
 
+        String verificationCode = getVerificationCode();
+        long currentTime = System.currentTimeMillis();
+        verificationCodes.put(userRequestDto.phoneNumber(), new VerificationData(verificationCode, currentTime));
 
-        User user = userRequestDto.toEntity();
-        return UserResponseDto.of(user);
+        bizmService.sendVerificationCode(userRequestDto.phoneNumber(), verificationCode);
+
+        return "Test";
+//        User user = userRequestDto.toEntity();
+//        return UserResponseDto.of(user);
+    }
+
+    // 인증번호 확인
+    public String verifyCode(String phoneNumber, String code) {
+        VerificationData verificationData = verificationCodes.get(phoneNumber);
+        if (verificationData == null) {
+            throw new Exception404(UserExceptionStatus.VERIFICATION_CODE_NOT_FOUND);
+        }
+
+        // 인증 번호 유효시간 체크
+        long currentTime = System.currentTimeMillis();
+        long difference = currentTime - verificationData.getTimestamp();
+        long threeMinutes = 30 * 1000; // 30초를 밀리초로 변환
+
+        if (difference > threeMinutes) {
+            throw new Exception400(UserExceptionStatus.VERIFICATION_CODE_OVER_TIME);
+        }
+
+        if (code.equals(verificationData.getCode())) {
+            verificationCodes.remove(phoneNumber);
+            return "Test";
+        } else {
+            throw new Exception400(UserExceptionStatus.VERIFICATION_CODE_NOT_SAME);
+        }
     }
 
     // 회원가입

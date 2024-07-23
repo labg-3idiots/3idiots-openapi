@@ -122,14 +122,14 @@
                                     </div>
                                     <!-- Verify number input-->
                                     <!-- 추후에 인증 개발완료되면 d-none 추가 -->
-                                    <div class="row gx-2 mt-2 mb-4">
+                                    <div id="inputCode" class="row gx-2 mt-2 mb-4 d-none">
                                         <div class="col-4 offset-5 form-floating">
                                             <input class="form-control" id="verify" placeholder="인증번호"/>
                                             <label for="verify">인증번호</label>
                                             <div class="invalid-feedback">인증번호가 일치하지 않습니다.</div>
                                         </div>
                                         <div class="col-3 form-floating ">
-                                            <input class="form-control btn-outline-info pt-3" type="button" value="인증확인"/>
+                                            <input class="form-control btn-outline-info pt-3" type="button" value="인증확인" onclick="btnConfirmVerificationCode()"/>
                                         </div>
                                     </div>
                                     <!-- Submit success message-->
@@ -295,7 +295,6 @@
         });
 
         function btnSignup() {
-            console.log(password.value);
             fetch("/users/signup", {
                 method: "POST",
                 headers: {
@@ -317,6 +316,13 @@
         }
 
         function btnIdentityVerification() {
+            // 핸드폰 번호 유효성 검사
+            let isPhoneNumber = /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+            if (!isPhoneNumber.test(phoneNumber.value)) {
+                phoneNumber.classList.add("is-invalid");
+                return;
+            }
+
             fetch("/users/verify/phonenumber", {
                 method: "POST",
                 headers: {
@@ -328,9 +334,40 @@
                 })
             }).then((res) => {
                 if(res.ok) {
-                    alert("인증번호를 입력해주세요.")
+                    document.getElementById('inputCode').classList.remove('d-none');
+                    phoneNumber.classList.remove("is-invalid");
+                    phoneNumber.classList.add("is-valid");
+                } else {
+                    alert('인증번호 전송에 오류가 생겼습니다.');
                 }
             })
+        }
+
+        function btnConfirmVerificationCode() {
+            var code = document.getElementById("verify");
+            var trimmedCode = code.value.trim();
+
+            if (trimmedCode === "" || trimmedCode === null) {
+                code.classList.add("is-invalid");
+                return;
+            }
+
+            fetch("/users/verify/code", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'phoneNumber': phoneNumber.value,
+                    'code': trimmedCode
+                })
+            }).then((res) => {
+                if (res.ok) {
+                    alert("인증번호 확인 완료");
+                } else {
+                    code.classList.add("is-invalid");
+                }
+            });
         }
     </script>
     </body>
