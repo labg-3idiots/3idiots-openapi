@@ -11,7 +11,11 @@ public enum UserExceptionStatus implements BaseExceptionStatus  {
     USER_ALREADY_EXIST(400, "이미 존재하는 회원입니다.", "10400"),
     USER_ALREADY_DELETED(400, "이미 삭제된 회원입니다.", "10400"),
     USER_SAVE_ERROR(500, "회원가입 실패하였습니다.", "10500"),
-    ID_OR_PASSWORD_NULL(403, "아이디 또는 비밀번호가 빈 값입니다.", "10403");
+    ID_OR_PASSWORD_NULL(403, "아이디 또는 비밀번호가 빈 값입니다.", "10403"),
+    PHONE_NUMBER_ALREADY_EXIST(400, "이미 가입된 핸드폰 번호입니다.", "10400"),
+    VERIFICATION_CODE_NOT_FOUND(404, "유효하지 않은 인증번호입니다.", "10404"),
+    VERIFICATION_CODE_OVER_TIME(400, "인증번호 입력 시간이 초과되었습니다.", "10400"),
+    VERIFICATION_CODE_NOT_SAME(400, "인증번호가 일치하지 않습니다.", "10400");
 
     private final int status;
     private final String message;

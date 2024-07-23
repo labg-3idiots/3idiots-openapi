@@ -3,9 +3,12 @@ package com.idiots.openapi.controller;
 import com.idiots.openapi.dto.UserRequestDto;
 import com.idiots.openapi.service.UserService;
 import com.idiots.openapi.utils.ApiUtils;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -36,6 +39,20 @@ public class UserController {
     ) {
 
         return ResponseEntity.ok(ApiUtils.success(userService.findById(userId)));
+    }
+
+    @PostMapping("/verify/phonenumber")
+    public ResponseEntity<?> verifyPhnoeNumber(
+        @RequestBody UserRequestDto userRequestDto
+    ){
+        return ResponseEntity.ok(ApiUtils.success(userService.sendVerificationCode(userRequestDto)));
+    }
+
+    @PostMapping("/verify/code")
+    public ResponseEntity<?> verifyCode(
+            @RequestBody Map<String, String> body
+    ) {
+        return ResponseEntity.ok(ApiUtils.success(userService.verifyCode(body.get("phoneNumber"), body.get("code"))));
     }
 
     /**
