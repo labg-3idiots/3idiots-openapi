@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mariadb:lts
+    container_name: 3idiots_mariadb
+    env_file: docker.env
+    ports:
+      - "3306:3306"
+    restart: always
+
+  redis:
+    image: redis:alpine
+    container_name: 3idiots_redis
+    ports:
+      - "6379:6379"

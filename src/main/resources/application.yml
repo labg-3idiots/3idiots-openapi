@@ -1,13 +1,3 @@
 spring:
-  devtools:
-    livereload:
-      enabled: true
-    restart:
-      enabled: true
-
-openapi:
-  serviceKey: SCT/cM3T6lehlLW/rcMn+TwXDTh7t5JRN3+iIdSXGPQ6rdEJmCNKQQa0LoMlMslQBptdg4Dt1BgX0pJ9o+h2kg==
-  baseUrl: http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst
-
-
-
+  profiles:
+    default: dev
