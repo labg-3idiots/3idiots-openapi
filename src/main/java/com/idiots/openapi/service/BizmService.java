@@ -66,26 +66,25 @@ public class BizmService {
     }
 
     // 날씨 정보 카카오톡 전송
-    public void sendKakaoTalk(KakaoTalkAlarmRequestDto data) {
+    public void sendKakaoTalk(List<KakaoTalkAlarmRequestDto> dataList) {
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddhhmmss");
         String formattedDateTime = currentDateTime.format(formatter);
 
-        BizmRequestDto request = BizmRequestDto.builder()
-                .msgid(formattedDateTime + data.getPhoneNumber().substring(3))
-                .receiver_num(data.getPhoneNumber())
-                .profile_key(profileKey)
-                .template_code("test_code")
-                .message(makeWeatherAlarmMessage(data))
-                .sms_message(makeWeatherAlarmMessage(data))
-                .sms_title("날씨 알림 서비스")
-                .sms_only("N")
-                .build();
+        List<BizmRequestDto> requestList = dataList.stream()
+                        .map( data -> BizmRequestDto.builder()
+                                .msgid(formattedDateTime + data.getPhoneNumber().substring(3))
+                                .receiver_num(data.getPhoneNumber())
+                                .profile_key(profileKey)
+                                .template_code("test_code")
+                                .message(makeWeatherAlarmMessage(data))
+                                .sms_message(makeWeatherAlarmMessage(data))
+                                .sms_title("날씨 알림 서비스")
+                                .sms_only("N")
+                                .build())
+                        .toList();
 
-        List<BizmRequestDto> requestList = new ArrayList<>();
-        requestList.add(request);
-
-        String result = webClient.post()
+        webClient.post()
                 .uri(uriBuilder -> uriBuilder
                         .scheme("https")
                         .host(host)
@@ -95,8 +94,10 @@ public class BizmService {
                 .bodyValue(requestList)
                 .retrieve()
                 .bodyToMono(String.class)
-                .block();
-        log.info("카카오톡 전송 : {}", result);
+                .subscribe(
+                        response -> log.info("카카오톡 전송 성공: {}", response),
+                        error -> log.error("카카오톡 전송 실패: ", error)
+                );
     }
 
     private String makeVerificationCodeText(String code) {

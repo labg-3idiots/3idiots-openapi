@@ -57,7 +57,7 @@ public class AlarmScheduler {
             List<KakaoTalkAlarmRequestDto> kakaoTalkAlarmRequestDtoList = userInterestRegionService.selectUserInterestRegionForRegionCodeList(rainyRegionCode);
 
             for(KakaoTalkAlarmRequestDto kakaoTalkAlarmRequestDto : kakaoTalkAlarmRequestDtoList) {
-                bizmService.sendKakaoTalk(kakaoTalkAlarmRequestDto);
+                bizmService.sendKakaoTalk(kakaoTalkAlarmRequestDtoList);
             }
         }
 
