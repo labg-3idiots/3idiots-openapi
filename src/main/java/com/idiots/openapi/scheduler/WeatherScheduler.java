@@ -43,7 +43,7 @@ public class WeatherScheduler {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Scheduled(cron = "0 0 3 * * *") // 매일 오전 3시에 실행
-//    @Scheduled(fixedRate = 30000)
+//    @Scheduled(fixedRate = 3000000)
     public void run() {
         String now = fomatter.format(LocalDate.now());
         log.info("현재날짜 : {}", now);
@@ -62,7 +62,7 @@ public class WeatherScheduler {
                     .build();
             log.info("데이터 바인딩 결과 : {}", apiParamDto);
 
-            String openapiResult = openapiService.getOpenapi(apiParamDto).block(); // 동기처리
+            String openapiResult = openapiService.getOpenapi(apiParamDto).block(); // block 처리
             log.info("단기예보 조회 결과 : {}", openapiResult);
 
             /**
@@ -92,6 +92,7 @@ public class WeatherScheduler {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+
         return resultList;
     }
 }

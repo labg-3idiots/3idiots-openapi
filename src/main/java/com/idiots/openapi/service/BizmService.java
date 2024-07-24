@@ -113,6 +113,6 @@ public class BizmService {
                 - 지역: %s %s
                                 
                 외출 시 우산☂️을 챙겨주시기 바랍니다
-                """, data.getName(), data.getDate(), data.getCity(), data.getDistrict());
+                """, data.getName(), data.getDate(), data.getFirstRegion(), data.getSecondRegion());
     }
 }

@@ -3,17 +3,13 @@ package com.idiots.openapi.scheduler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.idiots.openapi.dto.ApiParamDto;
-import com.idiots.openapi.dto.UserInterestRegionDto;
-import com.idiots.openapi.dto.WeatherResponseDto;
-import com.idiots.openapi.dto.WeatherResponseJsonDto;
+import com.idiots.openapi.dto.*;
 import com.idiots.openapi.entity.RegionWeather;
+import com.idiots.openapi.entity.User;
 import com.idiots.openapi.repository.RegionRepository;
 import com.idiots.openapi.repository.RegionWeatherRepository;
 import com.idiots.openapi.repository.UserRepository;
-import com.idiots.openapi.service.OpenapiService;
-import com.idiots.openapi.service.RegionWeatherService;
-import com.idiots.openapi.service.UserInterestRegionService;
+import com.idiots.openapi.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -33,17 +29,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class AlarmScheduler {
-    private final OpenapiService openapiService;
     private final RegionWeatherService regionWeatherService;
     private final UserInterestRegionService userInterestRegionService;
+    private final BizmService bizmService;
 
     private static final DateTimeFormatter fomatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final UserRepository userRepository;
-    private final RegionRepository regionRepository;
 
-    //@Scheduled(cron = "0 0 5 * * *") // 매일 오전 5시에 실행
-    @Scheduled(fixedRate = 3000)
+
+    @Scheduled(cron = "0 0 5 * * *", zone = "Asia/Seoul") // 매일 오전 5시에 실행
+//    @Scheduled(fixedRate = 30000000)
     public void run() {
         String now = fomatter.format(LocalDate.now());
         log.info("현재시간 : {}", now);
@@ -59,6 +53,13 @@ public class AlarmScheduler {
         log.info("비오는 지역코드 : {}", rainyRegionCodeList);
 
         // 비오는 지역코드로 user_interest_region에서 조회하여 조회된 user에게 알림 발송(카카오톡)
+        for(String rainyRegionCode : rainyRegionCodeList) {
+            List<KakaoTalkAlarmRequestDto> kakaoTalkAlarmRequestDtoList = userInterestRegionService.selectUserInterestRegionForRegionCodeList(rainyRegionCode);
+
+            for(KakaoTalkAlarmRequestDto kakaoTalkAlarmRequestDto : kakaoTalkAlarmRequestDtoList) {
+                bizmService.sendKakaoTalk(kakaoTalkAlarmRequestDto);
+            }
+        }
 
     }
 }
