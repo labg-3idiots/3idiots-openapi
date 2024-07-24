@@ -14,4 +14,6 @@ public interface UserInterestRegionRepository extends JpaRepository<UserInterest
             "GROUP BY uir.region.regionCode"
     )
     List<UserInterestRegion> findAllDistinctRegionCode();
+
+    List<UserInterestRegion> findAllByRegionRegionCode(String regionCode);
 }
