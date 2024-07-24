@@ -44,3 +44,9 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar {
+	archivesBaseName = 'openapi'
+	archiveFileName = 'openapi.jar'
+	archiveVersion = "0.0.1"
+}
