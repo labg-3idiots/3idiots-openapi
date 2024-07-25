@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class KakaoTalkAlarmRequestDto {
     private String phoneNumber;     // 핸드폰 번호
     private String name;            // 성명
-    private LocalDate date;            // 오늘 날짜
+    private LocalDate date;         // 오늘 날짜
     private String firstRegion;     // 시
     private String secondRegion;    // 구
 

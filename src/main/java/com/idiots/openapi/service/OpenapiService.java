@@ -40,7 +40,6 @@ public class OpenapiService {
                         .build())
                 .retrieve()
                 .bodyToMono(String.class);
-
     }
 
 }
