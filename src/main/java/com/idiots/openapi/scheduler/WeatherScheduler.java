@@ -42,7 +42,7 @@ public class WeatherScheduler {
     private static final DateTimeFormatter fomatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-//    @Scheduled(cron = "0 0 3 * * *") // 매일 오전 3시에 실행
+    @Scheduled(cron = "0 0 3 * * *") // 매일 오전 3시에 실행
 //    @Scheduled(fixedRate = 3000000)
     public void run() {
         String now = fomatter.format(LocalDate.now());

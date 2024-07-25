@@ -36,8 +36,8 @@ public class AlarmScheduler {
     private static final DateTimeFormatter fomatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
 
-//    @Scheduled(cron = "0 0 5 * * *", zone = "Asia/Seoul") // 매일 오전 5시에 실행
-    @Scheduled(fixedRate = 30000000)
+    @Scheduled(cron = "0 0 5 * * *", zone = "Asia/Seoul") // 매일 오전 5시에 실행
+//    @Scheduled(fixedRate = 30000000)
     public void run() {
         String now = fomatter.format(LocalDate.now());
 //        log.info("현재시간 : {}", now);
