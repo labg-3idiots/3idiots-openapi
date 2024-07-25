@@ -42,14 +42,14 @@ public class WeatherScheduler {
     private static final DateTimeFormatter fomatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Scheduled(cron = "0 0 3 * * *") // 매일 오전 3시에 실행
+//    @Scheduled(cron = "0 0 3 * * *") // 매일 오전 3시에 실행
 //    @Scheduled(fixedRate = 3000000)
     public void run() {
         String now = fomatter.format(LocalDate.now());
-        log.info("현재날짜 : {}", now);
+//        log.info("현재날짜 : {}", now);
 
         List<UserInterestRegionDto> userInterestRegionList = userInterestRegionService.selectUserInterestRegionList();
-        log.info("관심지역 테이블 : {}", userInterestRegionList);
+//        log.info("관심지역 테이블 리스트 : {}", userInterestRegionList);
 
         // 단기예보 조회를 위한 데이터 바인딩
         for(UserInterestRegionDto userInterestRegionDto : userInterestRegionList) {
@@ -60,32 +60,35 @@ public class WeatherScheduler {
                     .nx(userInterestRegionDto.nx())
                     .ny(userInterestRegionDto.ny())
                     .build();
-            log.info("데이터 바인딩 결과 : {}", apiParamDto);
+//            log.info("데이터 바인딩 결과 : {}", apiParamDto);
 
-            String openapiResult = openapiService.getOpenapi(apiParamDto).block(); // block 처리
-            log.info("단기예보 조회 결과 : {}", openapiResult);
+            openapiService.getOpenapi(apiParamDto).subscribe(
+               response -> {
+                   /**
+                    * 조회 데이터로 정제하기
+                    * PTY(강수형태) : 0(없음),1(비),2(비/눈),3(눈),4(소나기)
+                    */
+                   objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                   regionWeatherService.insertRegionWeatherList(resultAddList(response, userInterestRegionDto));
+//                   log.info("DB INSERT LIST : {}", resultAddList(response, userInterestRegionDto));
 
-            /**
-             * 조회 데이터로 정제하기
-             * PTY(강수형태) : 0(없음),1(비),2(비/눈),3(눈),4(소나기)
-             */
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            regionWeatherService.insertRegionWeatherList(resultAddList(openapiResult, userInterestRegionDto));
-            log.info("DB INSERT LIST : {}", resultAddList(openapiResult, userInterestRegionDto));
+               },
+               error -> log.error("카카오톡 전송 실패: ", error)
+            );
         }
     }
 
     // 조회한 데이터 정제 후 RegionWeather List에 담는 메서드
-    public List<RegionWeather> resultAddList(String openapiResult, UserInterestRegionDto userInterestRegionDto) {
+    public List<RegionWeather> resultAddList(String response, UserInterestRegionDto userInterestRegionDto) {
         List<RegionWeather> resultList = new ArrayList<>();
         try {
-            WeatherResponseJsonDto weatherResponseJsonDto = objectMapper.readValue(openapiResult, WeatherResponseJsonDto.class);
-            log.info("DTO 결과 : {}", weatherResponseJsonDto.getResponse().getBody().getItems().getItem());
+            WeatherResponseJsonDto weatherResponseJsonDto = objectMapper.readValue(response, WeatherResponseJsonDto.class);
+//            log.info("DTO 결과 : {}", weatherResponseJsonDto.getResponse().getBody().getItems().getItem());
             List<WeatherResponseDto> weatherResponseDtoList = weatherResponseJsonDto.getResponse().getBody().getItems().getItem();
 
             for(WeatherResponseDto weatherResponseDto : weatherResponseDtoList) {
                 if(weatherResponseDto.category().equals("PTY")) {
-                    log.info("강수형태 dto : {}", weatherResponseDto);
+//                    log.info("강수형태 dto : {}", weatherResponseDto);
                     resultList.add(weatherResponseDto.toEntity(userInterestRegionDto.regionCode()));
                 }
             }

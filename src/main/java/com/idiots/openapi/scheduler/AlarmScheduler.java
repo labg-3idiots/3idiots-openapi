@@ -36,11 +36,11 @@ public class AlarmScheduler {
     private static final DateTimeFormatter fomatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
 
-    @Scheduled(cron = "0 0 5 * * *", zone = "Asia/Seoul") // 매일 오전 5시에 실행
-//    @Scheduled(fixedRate = 30000000)
+//    @Scheduled(cron = "0 0 5 * * *", zone = "Asia/Seoul") // 매일 오전 5시에 실행
+    @Scheduled(fixedRate = 30000000)
     public void run() {
         String now = fomatter.format(LocalDate.now());
-        log.info("현재시간 : {}", now);
+//        log.info("현재시간 : {}", now);
 
         // DB에 INSERT된 데이터(당일)중 강수형태가 0이 아닌 데이터들만 가져옴
         List<WeatherResponseDto> weatherResponseDtoList = regionWeatherService.selectRegionWeatherList(now);
@@ -50,16 +50,12 @@ public class AlarmScheduler {
                 .stream()
                 .map(WeatherResponseDto::regionCode)
                 .collect(Collectors.toSet());
-        log.info("비오는 지역코드 : {}", rainyRegionCodeList);
+//        log.info("비오는 지역코드 : {}", rainyRegionCodeList);
 
         // 비오는 지역코드로 user_interest_region에서 조회하여 조회된 user에게 알림 발송(카카오톡)
         for(String rainyRegionCode : rainyRegionCodeList) {
             List<KakaoTalkAlarmRequestDto> kakaoTalkAlarmRequestDtoList = userInterestRegionService.selectUserInterestRegionForRegionCodeList(rainyRegionCode);
-
-            for(KakaoTalkAlarmRequestDto kakaoTalkAlarmRequestDto : kakaoTalkAlarmRequestDtoList) {
-                bizmService.sendKakaoTalk(kakaoTalkAlarmRequestDtoList);
-            }
+            bizmService.sendKakaoTalk(kakaoTalkAlarmRequestDtoList);
         }
-
     }
 }
