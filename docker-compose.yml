@@ -1,14 +1,19 @@
 services:
-  db:
-    image: mariadb:lts
-    container_name: 3idiots_mariadb
-    env_file: docker.env
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "3306:3306"
-    restart: always
+      - "8080:8080"
+    env_file:
+      - ./.env
+    container_name: "openapi"
+    tty: true
+    restart: on-failure:2
+#    depends_on: redis
 
-  redis:
-    image: redis:alpine
-    container_name: 3idiots_redis
-    ports:
-      - "6379:6379"
+#  redis:
+#    image: redis:alpine
+#    container_name: 3idiots_redis
+#    ports:
+#      - "6379:6379"

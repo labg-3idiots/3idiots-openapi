@@ -1,8 +1,58 @@
+server:
+  port: 8080
+
 spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
   config:
     activate:
       on-profile: prod
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${DB_HOST}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto : none # create, create-drop, update, none(추천)
+    properties:
+      hibernate:
+        format_sql: false
+        show_sql: false
+        highlight_sql: false
+    open-in-view: false
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql: error
+        type: warn
 
 openapi:
-  serviceKey: SCT/cM3T6lehlLW/rcMn+TwXDTh7t5JRN3+iIdSXGPQ6rdEJmCNKQQa0LoMlMslQBptdg4Dt1BgX0pJ9o+h2kg==
-  baseUrl: http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst
+  serviceKey: ${OPENAPI_SERVICE_KEY}
+  host: ${OPENAPI_HOST}
+  endPoint: ${OPENAPI_END_POINT}
+
+# 비즈엠 설정값 - SMS, 알림톡 전송 서비스
+bizm:
+  profileKey: ${BIZM_PROFILE_KEY}
+  host: ${BIZM_HOST}
+  endPoint: ${BIZM_END_POINT}
+
+# swagger 설정
+#springdoc:
+#  swagger-ui:
+#    path: /api-docs.html
+#  api-docs:
+#    path: /api-docs
+#  show-actuator: true
+#  default-produces-media-type: application/json
